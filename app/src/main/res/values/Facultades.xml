@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="facultades">
+        <item>Seleccione</item>
+        <item>Ingenieria</item>
+        <item>Ciencias de la Educación</item>
+        <item>Ciencias Humanas</item>
+        <item>Ciencias Básicas</item>
+        <item>Ciencias Económicas</item>
+        <item>Ciencias de la Salud</item>
+        <item>Ciencias Agroindustriales</item>
+    </string-array>
+</resources>
