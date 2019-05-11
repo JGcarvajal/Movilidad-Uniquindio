@@ -1,4 +1,5 @@
-package com.example.movilidaduniquindio;
+package com.movilidaduniquindio;
+
 
 import com.android.volley.Request;
 import com.android.volley.Response;
@@ -9,7 +10,7 @@ import java.util.Map;
 
 public class LoguinRequest extends StringRequest {
 
-    private static final String LOGUIN_REQUEST_URL="http://c7b72675.ngrok.io/movilidadUniquindio/loginpHP.php";
+    private static final String LOGUIN_REQUEST_URL="http://169b62b0.ngrok.io/movilidadUniquindio/loginpHP.php";
     private Map<String,String> params;
 
     public LoguinRequest (String correo, String clave, Response.Listener<String> listener){

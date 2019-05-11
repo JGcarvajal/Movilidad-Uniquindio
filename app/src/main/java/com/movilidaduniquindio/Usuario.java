@@ -1,6 +1,4 @@
-package com.example.movilidaduniquindio;
-
-import java.util.Date;
+package com.movilidaduniquindio;
 
 
 public class Usuario {
@@ -13,9 +11,15 @@ public class Usuario {
     private String facultad;
     private String fNacimiento;
     private String direccion;
+    private String latitud;
+    private String longitud;
+
+    public Usuario() {
+    }
 
     public Usuario(String nombres, String apellidos, int telefono, String correo, String clave,
-                   String identificacion, String facultad, String fNacimiento, String direccion) {
+                   String identificacion, String facultad, String fNacimiento, String direccion,
+                   String latitud, String longitud) {
         this.nombres = nombres;
         this.apellidos = apellidos;
         this.telefono = telefono;
@@ -25,6 +29,8 @@ public class Usuario {
         this.facultad = facultad;
         this.fNacimiento = fNacimiento;
         this.direccion = direccion;
+        this.latitud=latitud;
+        this.longitud=longitud;
     }
 
     public String getNombres() {
@@ -90,4 +96,12 @@ public class Usuario {
     public String getDireccion() {  return direccion;   }
 
     public void setDireccion(String direccion) { this.direccion = direccion; }
+
+    public String getLatitud() {    return latitud;  }
+
+    public void setLatitud(String latitud) {     this.latitud = latitud; }
+
+    public String getLongitud() {    return longitud;  }
+
+    public void setLongitud(String longitud) {     this.longitud = longitud;  }
 }

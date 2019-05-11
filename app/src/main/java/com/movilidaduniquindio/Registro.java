@@ -1,8 +1,8 @@
-package com.example.movilidaduniquindio;
+package com.movilidaduniquindio;
 
 import android.app.DatePickerDialog;
-import android.app.Dialog;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.support.v7.app.AlertDialog;
@@ -11,7 +11,6 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
@@ -27,13 +26,12 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.Calendar;
-import java.util.Date;
 
 public class Registro extends AppCompatActivity  {
     private Spinner spFacultades;
     private TextView fechaNacimiento;
     private Usuario usuario;
-    private Button btnregistrar;
+    private Button btnregistrar,btnCoordenadas;
 
     private EditText eTnombre;
     private EditText eTapellidos;
@@ -60,10 +58,12 @@ public class Registro extends AppCompatActivity  {
         eTidentificacion=(EditText)findViewById(R.id.etIdentificacion);
         eTdireccion=(EditText)findViewById(R.id.etDireccion);
         btnregistrar=(Button)findViewById(R.id.btnRegistrar);
+        btnCoordenadas=(Button)findViewById(R.id.btnCoordenadas);
 
         btnregistrar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
                 final String nombres=eTnombre.getText().toString();
                 final String apellidos=eTapellidos.getText().toString();
                 final int telefono=Integer.parseInt(eTtelefono.getText().toString());
@@ -71,13 +71,16 @@ public class Registro extends AppCompatActivity  {
                 final String clave=eTclave.getText().toString();
                 final String identificacion=eTidentificacion.getText().toString();
                 final String direccion =eTdireccion.getText().toString();
-                Spinner spinner = (Spinner) findViewById(R.id.spFacultades);
-                final String facultad = spinner.getSelectedItem().toString();
+                final String facultad = spFacultades.getSelectedItem().toString();
                 final String fechaNac =fechaNacimiento.getText().toString();
+                final String coordenadas[]=obtenerCoordenadas().split(";");
+                final String lat=coordenadas[0];
+                final String log=coordenadas[1];
+                pintaButton(obtenerCoordenadas());
 
 
-                usuario=new Usuario(nombres,apellidos,telefono,correo,clave,identificacion,facultad,fechaNac,direccion);
-
+                usuario=new Usuario(nombres,apellidos,telefono,correo,clave,identificacion,facultad,fechaNac,direccion,lat,log);
+                if(validarDatos(usuario) ){
                 Response.Listener<String> responsListener= new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
@@ -87,11 +90,11 @@ public class Registro extends AppCompatActivity  {
 
                             if(success) {
                                 Toast.makeText(getBaseContext(),"Registro exitoso ",Toast.LENGTH_LONG).show();
-                                Intent intent = new Intent(Registro.this, MainActivity.class);
+                                Intent intent = new Intent(Registro.this, Servicios.class);
                                 Registro.this.startActivity(intent);
                             }else{
                                 AlertDialog.Builder builder =new AlertDialog.Builder(Registro.this);
-                                builder.setMessage("Error en el registro").setNegativeButton("Retry",null)
+                                builder.setMessage("Error en el registro").setNegativeButton("OK",null)
                                         .create().show();
                             }
                         } catch (JSONException e) {
@@ -99,10 +102,15 @@ public class Registro extends AppCompatActivity  {
                         }
                     }
                 };
+                    RegisterRequest registerRequest= new RegisterRequest(usuario,responsListener);
+                    RequestQueue requestQueue= Volley.newRequestQueue(Registro.this);
+                    requestQueue.add(registerRequest);
+                }
+                else{
+                    Toast.makeText(Registro.this,"Por favor llene todos los datos ",Toast.LENGTH_LONG).show();
+                }
 
-                RegisterRequest registerRequest= new RegisterRequest(usuario,responsListener);
-                RequestQueue requestQueue= Volley.newRequestQueue(Registro.this);
-                requestQueue.add(registerRequest);
+
 
             }
         });
@@ -110,30 +118,25 @@ public class Registro extends AppCompatActivity  {
         fechaNacimiento.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Calendar calendar =Calendar.getInstance();
+                Calendar calendar = Calendar.getInstance();
                 int year=calendar.get(Calendar.YEAR);
                 int month=calendar.get(Calendar.MONTH);
                 int day=calendar.get(Calendar.DAY_OF_MONTH);
 
                 DatePickerDialog datePickerDialog=new DatePickerDialog(Registro.this,
-                        android.R.style.Theme_Holo_Dialog_MinWidth,myFechaListener,year,month,day );
+                        new DatePickerDialog.OnDateSetListener() {
+                            @Override
+                            public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
+                                fechaNacimiento.setText(dayOfMonth+"/"+(month+1)+"/"+year);
+                            }
+                        },year,month,day );
 
-                datePickerDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+
                 datePickerDialog.show();
             }
         });
 
-        myFechaListener=new DatePickerDialog.OnDateSetListener() {
-            @Override
-            public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
-               month= month+1;
-                Log.d("RegistroUTF","onDataSet: Date "+year+"/"+month+"/"+dayOfMonth);
 
-                String fecha=year+"/"+month+"/"+dayOfMonth;
-                fechaNacimiento.setText(fecha);
-
-            }
-        };
 
         spFacultades.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
@@ -147,6 +150,53 @@ public class Registro extends AppCompatActivity  {
 
             }
         });
+
+        btnCoordenadas.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent=new Intent(Registro.this,Coordenadas.class);
+                Registro.this.startActivity(intent);
+            }
+        });
+    }
+
+    private String obtenerCoordenadas() {
+
+        SharedPreferences settings = getSharedPreferences(Constantes.ALMACENAR_COORDENADAS, MODE_PRIVATE);
+        return settings.getString(Constantes.COORDENADAS, "");
+    }
+
+    private void pintaButton(String coodenadas){
+
+        if(!coodenadas.equals("")){
+            btnCoordenadas.setBackgroundColor(Color.parseColor("#f7a8ad"));
+        }
+    }
+
+    private boolean validarDatos(Usuario usuario){
+
+        if(usuario==null||usuario.getNombres()==null||usuario.getApellidos()==null||
+        usuario.getClave()==null||usuario.getDireccion()==null||usuario.getCorreo()==null||
+        usuario.getFacultad()==null||usuario.getfNacimiento()==null||usuario.getIdentificacion()==null||
+        usuario.getLatitud()==null||usuario.getLongitud()==null||usuario.getTelefono()==0) {
+        return false;
+        }
+        else{
+        final String[] correo=usuario.getCorreo().split("@");
+
+        if(correo.length==2) {
+            if (correo[1].equals("uqvirtual.edu.co") || correo[1].equals("uniquindio.edu.co")) {
+                return true;
+            } else{
+                Toast.makeText(Registro.this,"Este no es un correo valido ",Toast.LENGTH_LONG).show();
+                return false;
+            }
+
+        }
+
+        return false;
+    }
+
     }
 
 }

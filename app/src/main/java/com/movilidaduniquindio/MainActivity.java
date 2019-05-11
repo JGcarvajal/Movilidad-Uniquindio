@@ -1,4 +1,4 @@
-package com.example.movilidaduniquindio;
+package com.movilidaduniquindio;
 
 import android.content.Intent;
 import android.support.v7.app.AlertDialog;
@@ -16,12 +16,12 @@ import com.android.volley.toolbox.Volley;
 
 import org.json.JSONException;
 import org.json.JSONObject;
-import org.w3c.dom.Text;
+
 
 public class MainActivity extends AppCompatActivity {
-private TextView tvRegistrar,etEntrar ;
-private EditText etCorreo,etClave;
-private Button btnCrearServicio;
+    private TextView tvRegistrar,etEntrar ;
+    private EditText etCorreo,etClave;
+    private Usuario usuario;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,7 +33,6 @@ private Button btnCrearServicio;
         etCorreo=(EditText) findViewById(R.id.etCorreo);
         etClave=(EditText) findViewById(R.id.etclave);
 
-        btnCrearServicio=findViewById(R.id.btnCrearServicio);
 
         etEntrar.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -52,13 +51,33 @@ private Button btnCrearServicio;
                             if (success){
                                 String nombres= jsonResponse.getString("nombres");
                                 String apellidos= jsonResponse.getString("apellidos");
+                                String telefono= jsonResponse.getString("telefono");
+                                String correo= jsonResponse.getString("correo");
+                                String clave= jsonResponse.getString("clave");
+                                String identificacion= jsonResponse.getString("num_id");
+                                String facultad= jsonResponse.getString("facultad");
+                                String fNacimineto= jsonResponse.getString("fNacimiento");
+                                String direccion= jsonResponse.getString("direccion");
+                                String latitud= jsonResponse.getString("latitud");
+                                String longitud= jsonResponse.getString("longitud");
 
-                                Toast.makeText(getBaseContext(),"hola "+nombres+" "+apellidos+", estas logueado",
+                                usuario=new Usuario(nombres,apellidos,Integer.parseInt(telefono),
+                                        correo,clave,identificacion,facultad,fNacimineto,direccion,
+                                        latitud,longitud);
+
+                                Preference.saveObjectToSharedPreference(MainActivity.this,
+                                        "mPreference", "USER", usuario);
+
+                                Toast.makeText(getBaseContext(),"hola "+nombres+" "+apellidos,
                                         Toast.LENGTH_LONG).show();
+
+                                Intent intent =new Intent(MainActivity.this,Servicios.class);
+                                MainActivity.this.startActivity(intent);
+
 
                             }else{
                                 AlertDialog.Builder builder =new AlertDialog.Builder(MainActivity.this);
-                                builder.setMessage("Error en de loguin").setNegativeButton("Retri",null)
+                                builder.setMessage("Error en de loguin").setNegativeButton("Ok",null)
                                         .create().show();
                             }
                         } catch (JSONException e) {
@@ -82,12 +101,6 @@ private Button btnCrearServicio;
             }
         });
 
-        btnCrearServicio.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intentCServ =new Intent(MainActivity.this,CrearServicio.class);
-                MainActivity.this.startActivity(intentCServ);
-            }
-        });
+
     }
 }

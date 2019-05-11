@@ -1,4 +1,4 @@
-package com.example.movilidaduniquindio;
+package com.movilidaduniquindio;
 
 import org.junit.Test;
 
