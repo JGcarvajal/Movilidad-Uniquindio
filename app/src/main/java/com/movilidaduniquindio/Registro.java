@@ -14,6 +14,7 @@ import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -31,7 +32,8 @@ public class Registro extends AppCompatActivity  {
     private Spinner spFacultades;
     private TextView fechaNacimiento;
     private Usuario usuario;
-    private Button btnregistrar,btnCoordenadas;
+    private Button btnregistrar;
+    private ImageButton btnCoordenadas;
 
     private EditText eTnombre;
     private EditText eTapellidos;
@@ -58,25 +60,27 @@ public class Registro extends AppCompatActivity  {
         eTidentificacion=(EditText)findViewById(R.id.etIdentificacion);
         eTdireccion=(EditText)findViewById(R.id.etDireccion);
         btnregistrar=(Button)findViewById(R.id.btnRegistrar);
-        btnCoordenadas=(Button)findViewById(R.id.btnCoordenadas);
+        btnCoordenadas=(ImageButton)findViewById(R.id.ibtCoordenadas);
+
+        pintaButton(obtenerCoordenadas());
 
         btnregistrar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
-                final String nombres=eTnombre.getText().toString();
-                final String apellidos=eTapellidos.getText().toString();
-                final int telefono=Integer.parseInt(eTtelefono.getText().toString());
-                final String correo=eTcorreo.getText().toString();
-                final String clave=eTclave.getText().toString();
-                final String identificacion=eTidentificacion.getText().toString();
-                final String direccion =eTdireccion.getText().toString();
-                final String facultad = spFacultades.getSelectedItem().toString();
-                final String fechaNac =fechaNacimiento.getText().toString();
+                final String nombres=eTnombre.getText().toString().trim();
+                final String apellidos=eTapellidos.getText().toString().trim();
+                final int telefono=Integer.parseInt(eTtelefono.getText().toString().trim());
+                final String correo=eTcorreo.getText().toString().trim();
+                final String clave=eTclave.getText().toString().trim();
+                final String identificacion=eTidentificacion.getText().toString().trim();
+                final String direccion =eTdireccion.getText().toString().trim();
+                final String facultad = spFacultades.getSelectedItem().toString().trim();
+                final String fechaNac =fechaNacimiento.getText().toString().trim();
                 final String coordenadas[]=obtenerCoordenadas().split(";");
-                final String lat=coordenadas[0];
-                final String log=coordenadas[1];
-                pintaButton(obtenerCoordenadas());
+                final String lat=coordenadas[0].trim();
+                final String log=coordenadas[1].trim();
+
 
 
                 usuario=new Usuario(nombres,apellidos,telefono,correo,clave,identificacion,facultad,fechaNac,direccion,lat,log);
@@ -169,7 +173,10 @@ public class Registro extends AppCompatActivity  {
     private void pintaButton(String coodenadas){
 
         if(!coodenadas.equals("")){
-            btnCoordenadas.setBackgroundColor(Color.parseColor("#f7a8ad"));
+            btnCoordenadas.setBackgroundColor(Color.parseColor("#FC897C"));
+        }else{
+            btnCoordenadas.setBackgroundColor(Color.parseColor("#48F879"));
+
         }
     }
 

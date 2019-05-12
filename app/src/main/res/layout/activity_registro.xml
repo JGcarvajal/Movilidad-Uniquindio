@@ -136,7 +136,7 @@
                         android:layout_width="250dp"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="10dp"
-                        android:inputType="text" />
+                        android:inputType="number" />
 
                     <TextView
                         android:id="@+id/fechaNacimiento"
@@ -174,12 +174,13 @@
                         android:layout_marginTop="10dp"
                         android:inputType="text" />
 
-                    <Button
-                        android:id="@+id/btnCoordenadas"
-                        android:layout_width="250dp"
-                        android:layout_height="25dp"
-                        android:layout_marginTop="20dp"
-                        android:background="@color/colorBotones" />
+                    <ImageButton
+                        android:id="@+id/ibtCoordenadas"
+                        android:layout_width="50dp"
+                        android:layout_height="40dp"
+                        app:srcCompat="@drawable/ic_action_my_location"
+                        android:background="@color/colorBotones"/>
+
 
                     <Spinner
                         android:id="@+id/spFacultades"
@@ -187,6 +188,8 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="25dp"
                         android:entries="@array/facultades" />
+
+
 
                 </LinearLayout>
 

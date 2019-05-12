@@ -19,6 +19,7 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
@@ -28,10 +29,9 @@ import java.util.Locale;
 public class Coordenadas extends AppCompatActivity implements GoogleMap.OnMarkerDragListener,OnMapReadyCallback {
 
     private GoogleMap mMap;
-    private Marker marker;
+    private Marker miMarker;
     private double latitud;
     private double longitud;
-private final int REQUUEST_ACCESS_FINE=1;
 private Button btnAceptar;
 
     @Override
@@ -55,6 +55,8 @@ private Button btnAceptar;
                 Coordenadas.this.startActivity(intent);**/
             }
         });
+
+
     }
 
 
@@ -73,13 +75,30 @@ private Button btnAceptar;
 
         miUbicacion();
         googleMap.setOnMarkerDragListener(this);
+
+        mMap.setOnMapClickListener(clickListener);
+
     }
+
+    private GoogleMap.OnMapClickListener clickListener =
+            new GoogleMap.OnMapClickListener() {
+                @Override
+                public void onMapClick(LatLng latLng) {
+                   latitud=latLng.latitude;
+                    longitud =latLng.longitude;
+
+                    agregarMarker(latitud,longitud);
+
+                
+                }
+            };
 
     public void agregarMarker(double latitud, double longitud) {
 
         LatLng ubicacion = new LatLng(latitud, longitud);
-        marker = mMap.addMarker(new MarkerOptions().position(ubicacion).title("Mi Ubicación")
-                .snippet("Arrastra para tomar coordenadas").draggable(true));
+        miMarker = mMap.addMarker(new MarkerOptions().position(ubicacion).title("Mi Ubicación")
+                .snippet("Arrastra para tomar coordenadas").draggable(true)
+        .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN)));
 
         CameraUpdate miUbicacion = CameraUpdateFactory.newLatLngZoom(ubicacion, 16);
         mMap.animateCamera(miUbicacion);
@@ -98,8 +117,7 @@ private Button btnAceptar;
          double log;
          if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
 
-             ActivityCompat.requestPermissions(this,new String[]{Manifest.permission.ACCESS_COARSE_LOCATION,
-             Manifest.permission.ACCESS_FINE_LOCATION},REQUUEST_ACCESS_FINE);
+
         }
         LocationManager locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
         Location location = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
@@ -116,17 +134,18 @@ private Button btnAceptar;
 
     @Override
     public void onMarkerDrag(Marker marker) {
+        double lat=marker.getPosition().latitude;
+        double log=marker.getPosition().longitude;
+        String newTitle=String.format(Locale.getDefault(),
+                lat+" "+log,lat,log);
 
+        setTitle(newTitle);
     }
 
     @Override
     public void onMarkerDragEnd(Marker marker) {
-        double lat=marker.getPosition().latitude;
-        double log=marker.getPosition().longitude;
-    String newTitle=String.format(Locale.getDefault(),
-           lat+" "+log,lat,log);
+        setTitle(R.string.coordenadas);
 
-    setTitle(newTitle);
     }
     private void guardarCoordenadas(String coordenadas) {
 
