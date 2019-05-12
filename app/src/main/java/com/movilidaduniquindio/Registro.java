@@ -68,12 +68,14 @@ public class Registro extends AppCompatActivity  {
             @Override
             public void onClick(View v) {
 
+
+
                 final String nombres=eTnombre.getText().toString().trim();
                 final String apellidos=eTapellidos.getText().toString().trim();
-                final int telefono=Integer.parseInt(eTtelefono.getText().toString().trim());
+                final String identificacion=eTidentificacion.getText().toString().trim();
+                final String telefono=eTtelefono.getText().toString().trim();
                 final String correo=eTcorreo.getText().toString().trim();
                 final String clave=eTclave.getText().toString().trim();
-                final String identificacion=eTidentificacion.getText().toString().trim();
                 final String direccion =eTdireccion.getText().toString().trim();
                 final String facultad = spFacultades.getSelectedItem().toString().trim();
                 final String fechaNac =fechaNacimiento.getText().toString().trim();
@@ -185,7 +187,7 @@ public class Registro extends AppCompatActivity  {
         if(usuario==null||usuario.getNombres()==null||usuario.getApellidos()==null||
         usuario.getClave()==null||usuario.getDireccion()==null||usuario.getCorreo()==null||
         usuario.getFacultad()==null||usuario.getfNacimiento()==null||usuario.getIdentificacion()==null||
-        usuario.getLatitud()==null||usuario.getLongitud()==null||usuario.getTelefono()==0) {
+        usuario.getLatitud()==null||usuario.getLongitud()==null||usuario.getTelefono()==null) {
         return false;
         }
         else{

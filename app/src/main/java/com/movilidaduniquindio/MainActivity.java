@@ -61,7 +61,7 @@ public class MainActivity extends AppCompatActivity {
                                 String latitud= jsonResponse.getString("latitud");
                                 String longitud= jsonResponse.getString("longitud");
 
-                                usuario=new Usuario(nombres,apellidos,Integer.parseInt(telefono),
+                                usuario=new Usuario(nombres,apellidos,telefono,
                                         correo,clave,identificacion,facultad,fNacimineto,direccion,
                                         latitud,longitud);
 

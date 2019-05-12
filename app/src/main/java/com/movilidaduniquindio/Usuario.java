@@ -4,7 +4,7 @@ package com.movilidaduniquindio;
 public class Usuario {
     private String nombres;
     private String apellidos;
-    private int telefono;
+    private String telefono;
     private String correo;
     private String clave;
     private String identificacion;
@@ -17,7 +17,7 @@ public class Usuario {
     public Usuario() {
     }
 
-    public Usuario(String nombres, String apellidos, int telefono, String correo, String clave,
+    public Usuario(String nombres, String apellidos, String telefono, String correo, String clave,
                    String identificacion, String facultad, String fNacimiento, String direccion,
                    String latitud, String longitud) {
         this.nombres = nombres;
@@ -49,11 +49,11 @@ public class Usuario {
         this.apellidos = apellidos;
     }
 
-    public int getTelefono() {
+    public String getTelefono() {
         return telefono;
     }
 
-    public void setTelefono(int telefono) {
+    public void setTelefono(String telefono) {
         this.telefono = telefono;
     }
 

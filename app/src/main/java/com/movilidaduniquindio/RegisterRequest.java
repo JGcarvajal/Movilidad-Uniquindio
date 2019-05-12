@@ -18,7 +18,7 @@ public class RegisterRequest extends StringRequest {
 
         String nombre =usuario.getNombres();
         String apellidos =usuario.getApellidos();
-        String celular =Integer.toString(usuario.getTelefono());
+        String celular =usuario.getTelefono();
         String correo =usuario.getCorreo();
         String clave =usuario.getClave();
         String identificacion =usuario.getIdentificacion();
