@@ -4,11 +4,9 @@ import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
@@ -42,6 +40,7 @@ public class Registro extends AppCompatActivity  {
     private EditText eTclave;
     private EditText eTidentificacion;
     private EditText eTdireccion;
+    RegisterRequest registerRequest;
 
     DatePickerDialog.OnDateSetListener myFechaListener;
     @Override
@@ -49,6 +48,7 @@ public class Registro extends AppCompatActivity  {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_registro);
 
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         spFacultades=(Spinner)findViewById(R.id.spFacultades);
         fechaNacimiento=(TextView)findViewById(R.id.fechaNacimiento);
 
@@ -112,9 +112,7 @@ public class Registro extends AppCompatActivity  {
                     RequestQueue requestQueue= Volley.newRequestQueue(Registro.this);
                     requestQueue.add(registerRequest);
                 }
-                else{
-                    Toast.makeText(Registro.this,"Por favor llene todos los datos ",Toast.LENGTH_LONG).show();
-                }
+
 
 
 
@@ -184,10 +182,11 @@ public class Registro extends AppCompatActivity  {
 
     private boolean validarDatos(Usuario usuario){
 
-        if(usuario==null||usuario.getNombres()==null||usuario.getApellidos()==null||
-        usuario.getClave()==null||usuario.getDireccion()==null||usuario.getCorreo()==null||
-        usuario.getFacultad()==null||usuario.getfNacimiento()==null||usuario.getIdentificacion()==null||
-        usuario.getLatitud()==null||usuario.getLongitud()==null||usuario.getTelefono()==null) {
+        if(usuario==null||usuario.getNombres().equals("")||usuario.getApellidos().equals("")||
+        usuario.getClave().equals("")||usuario.getDireccion().equals("")||usuario.getCorreo().equals("")||
+        usuario.getFacultad().equals("")||usuario.getfNacimiento().equals("")||usuario.getIdentificacion().equals("")||
+        usuario.getLatitud().equals("")||usuario.getLongitud().equals("")||usuario.getTelefono().equals("")) {
+            Toast.makeText(Registro.this,"Por favor llene todos los campos ",Toast.LENGTH_LONG).show();
         return false;
         }
         else{

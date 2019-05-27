@@ -4,10 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".CrearServicio"
+    tools:context=".CrearServicio2"
     android:orientation="vertical">
-
-
 
     <ScrollView
         android:layout_width="match_parent"
@@ -36,21 +34,32 @@
                     android:layout_height="wrap_content"
                     android:orientation="vertical">
 
-                    <TextView
-                        android:id="@+id/tvInicio"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="20dp"
-                        android:drawableLeft="@drawable/ic_action_location"
-                        android:text="Inicio" />
+
 
                     <TextView
-                        android:id="@+id/tvFin"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="25dp"
+                        android:text="Fecha" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="25dp"
+                        android:text="Hora" />
+
+                    <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="30dp"
-                        android:drawableLeft="@drawable/ic_action_location"
-                        android:text="Fin" />
+                        android:text="Puestos" />
+
+                    <TextView
+                        android:id="@+id/tvObservacion"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="25dp"
+                        android:text="Observación" />
 
 
                 </LinearLayout>
@@ -61,47 +70,64 @@
                     android:gravity="center"
                     android:orientation="vertical">
 
-                    <Spinner
-                        android:id="@+id/spInicio"
-                        android:layout_width="250dp"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="25dp"
-                        android:entries="@array/Recorrido"/>
 
-                    <Spinner
-                        android:id="@+id/spFin"
+
+                    <TextView
+                        android:id="@+id/tvFecha"
                         android:layout_width="250dp"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="25dp"
-                        android:entries="@array/Recorrido" />
+                        android:text="Fecha del servicio" />
+
+                    <TextView
+                        android:id="@+id/tvhora"
+                        android:layout_width="250dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="25dp"
+                        android:text="Hora del servicio" />
+
+                    <EditText
+                        android:id="@+id/etPuestos"
+                        android:layout_width="250dp"
+                        android:layout_height="wrap_content"
+                        android:hint="Puestos disponibles"
+                        android:inputType="number"
+                        android:layout_marginTop="15dp"
+                        />
+
 
                 </LinearLayout>
 
+
+
+
             </LinearLayout>
 
-            <fragment xmlns:android="http://schemas.android.com/apk/res/android"
-                xmlns:map="http://schemas.android.com/apk/res-auto"
-                xmlns:tools="http://schemas.android.com/tools"
-                android:id="@+id/map"
-                android:name="com.google.android.gms.maps.SupportMapFragment"
+
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="320sp"
-                tools:context=".Coordenadas" />
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+                <EditText
+                    android:id="@+id/etObservacion"
+                    android:layout_width="match_parent"
+                    android:layout_height="100dp"
+                    android:hint="Observación..."
+                    android:inputType="text|textMultiLine"/>
+            </LinearLayout>
+
 
             <Button
-                android:id="@+id/btnSiguiente"
+                android:id="@+id/btnCrear"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="20dp"
                 android:background="@color/colorBotones"
-                android:text="Siguiente"
-                android:onClick="OnClickSiguiente"
+                android:text="Crear"
+                android:onClick="OnClickCrear"
                 android:textSize="24sp" />
 
         </LinearLayout>
     </ScrollView>
-
-
-
 
 </LinearLayout>

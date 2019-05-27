@@ -13,6 +13,7 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
+import android.widget.Toast;
 
 import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -33,6 +34,8 @@ public class Coordenadas extends AppCompatActivity implements GoogleMap.OnMarker
     private double latitud;
     private double longitud;
 private Button btnAceptar;
+Preference preference;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,6 +45,7 @@ private Button btnAceptar;
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
+       // getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         btnAceptar=(Button)findViewById(R.id.btnAceptar);
 
@@ -77,7 +81,7 @@ private Button btnAceptar;
         googleMap.setOnMarkerDragListener(this);
 
         mMap.setOnMapClickListener(clickListener);
-
+        mMap.setMyLocationEnabled(true);
     }
 
     private GoogleMap.OnMapClickListener clickListener =
@@ -94,7 +98,9 @@ private Button btnAceptar;
             };
 
     public void agregarMarker(double latitud, double longitud) {
-
+       if (miMarker !=null) {
+           miMarker.remove();
+       }
         LatLng ubicacion = new LatLng(latitud, longitud);
         miMarker = mMap.addMarker(new MarkerOptions().position(ubicacion).title("Mi Ubicación")
                 .snippet("Arrastra para tomar coordenadas").draggable(true)
@@ -118,13 +124,37 @@ private Button btnAceptar;
          if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
 
 
-        }
+        } else{
+
+
         LocationManager locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
         Location location = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
-        actualizarubicacion(location);
-        lat=location.getLatitude();
-        log=location.getLongitude();
-        guardarCoordenadas(lat+";"+log);
+
+
+             if (locationManager != null) {
+                 //Existe GPS_PROVIDER obtiene ubicación
+                 location = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+             }
+
+             if(location == null){ //Trata con NETWORK_PROVIDER
+
+                 if (locationManager != null) {
+                     //Existe NETWORK_PROVIDER obtiene ubicación
+                     location = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
+                 }
+             }
+             if(location != null) {
+                 actualizarubicacion(location);
+                 lat=location.getLatitude();
+                 log=location.getLongitude();
+                 guardarCoordenadas(lat+";"+log);
+             }else {
+                 Toast.makeText(this, "No se pudo obtener geolocalización", Toast.LENGTH_LONG).show();
+             }
+
+
+
+    }
     }
 
     @Override

@@ -5,7 +5,6 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -22,12 +21,15 @@ public class MainActivity extends AppCompatActivity {
     private TextView tvRegistrar,etEntrar ;
     private EditText etCorreo,etClave;
     private Usuario usuario;
+    LoguinRequest loguinRequest;
+    Constantes constantes;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         tvRegistrar=(TextView) findViewById(R.id.tvRegistrarse);
         etEntrar=(TextView) findViewById(R.id.tvEntrar);
         etCorreo=(EditText) findViewById(R.id.etCorreo);
@@ -71,7 +73,7 @@ public class MainActivity extends AppCompatActivity {
                                 Toast.makeText(getBaseContext(),"hola "+nombres+" "+apellidos,
                                         Toast.LENGTH_LONG).show();
 
-                                Intent intent =new Intent(MainActivity.this,Servicios.class);
+                                Intent intent =new Intent(MainActivity.this, Servicios.class);
                                 MainActivity.this.startActivity(intent);
 
 
