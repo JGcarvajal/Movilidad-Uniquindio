@@ -11,6 +11,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.Spinner;
@@ -67,6 +68,7 @@ public class CrearServicio extends AppCompatActivity implements OnMapReadyCallba
     private Marker markerInicio;
     private Marker markerFin;
     private JSONObject jsonObject;
+    private TextView tvSiguiente;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -86,8 +88,19 @@ public class CrearServicio extends AppCompatActivity implements OnMapReadyCallba
 
         spInicio.setOnItemSelectedListener(spInicioListener);
         spFin.setOnItemSelectedListener(spFinListener);
+        tvSiguiente=(TextView) findViewById(R.id.tvSiguiente);
+        tvSiguiente.setOnClickListener(btnSiguienteListenet);
+
 
     }
+
+    private View.OnClickListener btnSiguienteListenet=new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+           Intent intent=new Intent(CrearServicio.this,CrearServicio2.class);
+           CrearServicio.this.startActivity(intent);
+        }
+    };
 
     private AdapterView.OnItemSelectedListener spInicioListener=new AdapterView.OnItemSelectedListener() {
         @Override
@@ -209,7 +222,7 @@ public class CrearServicio extends AppCompatActivity implements OnMapReadyCallba
         }
 
         miMarker = mMap.addMarker(new MarkerOptions().position(ubicacion).title("Mi Ubicación")
-                .snippet("Arrastra para tomar coordenadas").draggable(true)
+                .draggable(true)
                 .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN)));
 
         CameraUpdate miUbicacion = CameraUpdateFactory.newLatLngZoom(ubicacion, 16);

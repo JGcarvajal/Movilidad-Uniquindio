@@ -46,7 +46,7 @@ public class CrearServicio2 extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_crear_servicio2);
-
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         tvFecha=(TextView)findViewById(R.id.tvFecha);
         tvHora=(TextView)findViewById(R.id.tvhora);
         etObservacion=(EditText) findViewById(R.id.etObservacion);
