@@ -41,6 +41,7 @@ public class CrearServicio2 extends AppCompatActivity {
     Preference preference;
     Servicio servicio;
     CrearServiciosRequest crearServiciosRequest;
+    private TextView tvCrearServicio;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,7 +55,8 @@ public class CrearServicio2 extends AppCompatActivity {
         usuario = Preference.getSavedObjectFromPreference(this,
                 "mPreference", "USER", Usuario.class);
 
-
+        tvCrearServicio=(TextView)findViewById(R.id.tvCrear);
+        tvCrearServicio.setOnClickListener(tvCrearServicioListener);
 
         tvFecha.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -112,59 +114,60 @@ public class CrearServicio2 extends AppCompatActivity {
         });
     }
 
+    private View.OnClickListener tvCrearServicioListener=new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            Servicio servicio;
 
+            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyyMMdd", Locale.getDefault());
+            SimpleDateFormat timeFormat = new SimpleDateFormat("hhmm", Locale.getDefault());
+            SimpleDateFormat horaFormat = new SimpleDateFormat("hh:mm", Locale.getDefault());
 
-    public void OnClickCrear(View view) {
-        Servicio servicio;
+            final String numDoc = usuario.getIdentificacion()+dateFormat.format(dFecha)+timeFormat.format(dHora);
+            final LatLng latLngInicio=latLngIni;
+            final LatLng latLngFini=latLngFin;
+            final String fecha=dateFormat.format(dFecha);
+            final String hora=horaFormat.format(dHora);
+            final String conductor=usuario.getIdentificacion();
+            final int puestos=Integer.parseInt(etPuestos.getText().toString());
+            final String observacion=etObservacion.getText().toString();
 
-        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyyMMdd", Locale.getDefault());
-        SimpleDateFormat timeFormat = new SimpleDateFormat("hhmm", Locale.getDefault());
-        SimpleDateFormat horaFormat = new SimpleDateFormat("hh:mm", Locale.getDefault());
+            servicio=new Servicio(numDoc,latLngInicio,latLngFini,fecha,hora,conductor,puestos,
+                    observacion,"MZC78B");
 
-        final String numDoc = usuario.getIdentificacion()+dateFormat.format(dFecha)+timeFormat.format(dHora);
-        final LatLng latLngInicio=latLngIni;
-        final LatLng latLngFini=latLngFin;
-        final String fecha=dateFormat.format(dFecha);
-        final String hora=horaFormat.format(dHora);
-        final String conductor=usuario.getIdentificacion();
-        final int puestos=Integer.parseInt(etPuestos.getText().toString());
-        final String observacion=etObservacion.getText().toString();
+            if(verificarServicio(servicio)) {
 
-        servicio=new Servicio(numDoc,latLngInicio,latLngFini,fecha,hora,conductor,puestos,
-                observacion,"MZC78B");
+                Response.Listener<String> responsListener = new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        try {
+                            JSONObject jsonResponse = new JSONObject(response);
+                            boolean success = jsonResponse.getBoolean("success");
 
-        if(verificarServicio(servicio)) {
-
-            Response.Listener<String> responsListener = new Response.Listener<String>() {
-                @Override
-                public void onResponse(String response) {
-                    try {
-                        JSONObject jsonResponse = new JSONObject(response);
-                        boolean success = jsonResponse.getBoolean("success");
-
-                        if (success) {
-                            Toast.makeText(getBaseContext(), "Servicio creado con exito!! ", Toast.LENGTH_LONG).show();
-                            Intent intent = new Intent(CrearServicio2.this, Servicios.class);
-                            CrearServicio2.this.startActivity(intent);
-                        } else {
-                            AlertDialog.Builder builder = new AlertDialog.Builder(CrearServicio2.this);
-                            builder.setMessage("Error en el registro").setNegativeButton("OK", null)
-                                    .create().show();
+                            if (success) {
+                                Toast.makeText(getBaseContext(), "Servicio creado con exito!! ", Toast.LENGTH_LONG).show();
+                                Intent intent = new Intent(CrearServicio2.this, Servicios.class);
+                                CrearServicio2.this.startActivity(intent);
+                            } else {
+                                AlertDialog.Builder builder = new AlertDialog.Builder(CrearServicio2.this);
+                                builder.setMessage("Error en el registro").setNegativeButton("OK", null)
+                                        .create().show();
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
                         }
-                    } catch (JSONException e) {
-                        e.printStackTrace();
                     }
-                }
-            };
-            CrearServiciosRequest crearServiciosRequest = new CrearServiciosRequest(servicio, responsListener);
-            RequestQueue requestQueue = Volley.newRequestQueue(CrearServicio2.this);
-            requestQueue.add(crearServiciosRequest);
-        }else{
-            Toast.makeText(getBaseContext(),"Por favor llene todos los campos ",
-                    Toast.LENGTH_LONG).show();
+                };
+                CrearServiciosRequest crearServiciosRequest = new CrearServiciosRequest(servicio, responsListener);
+                RequestQueue requestQueue = Volley.newRequestQueue(CrearServicio2.this);
+                requestQueue.add(crearServiciosRequest);
+            }else{
+                Toast.makeText(getBaseContext(),"Por favor llene todos los campos ",
+                        Toast.LENGTH_LONG).show();
+            }
         }
+    };
 
-    }
 
     private boolean verificarServicio(Servicio servicio){
 
