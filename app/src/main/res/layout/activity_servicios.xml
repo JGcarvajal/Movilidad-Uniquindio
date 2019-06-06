@@ -8,6 +8,11 @@
     android:fitsSystemWindows="true"
     tools:openDrawer="start">
 
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/RecyclerServicio"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
     <include
         android:id="@+id/nav_menu"
         layout="@layout/app_bar_servicios"
