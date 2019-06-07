@@ -119,42 +119,45 @@ Preference preference;
     }
 
     private void miUbicacion() {
-         double lat;
-         double log;
-         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+        try {
+            double lat;
+            double log;
+            if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
 
 
-        } else{
+            } else {
 
 
-        LocationManager locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
-        Location location = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+                LocationManager locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+                Location location = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
 
 
-             if (locationManager != null) {
-                 //Existe GPS_PROVIDER obtiene ubicación
-                 location = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
-             }
+                if (locationManager != null) {
+                    //Existe GPS_PROVIDER obtiene ubicación
+                    location = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+                }
 
-             if(location == null){ //Trata con NETWORK_PROVIDER
+                if (location == null) { //Trata con NETWORK_PROVIDER
 
-                 if (locationManager != null) {
-                     //Existe NETWORK_PROVIDER obtiene ubicación
-                     location = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
-                 }
-             }
-             if(location != null) {
-                 actualizarubicacion(location);
-                 lat=location.getLatitude();
-                 log=location.getLongitude();
-                 guardarCoordenadas(lat+";"+log);
-             }else {
-                 Toast.makeText(this, "No se pudo obtener geolocalización", Toast.LENGTH_LONG).show();
-             }
+                    if (locationManager != null) {
+                        //Existe NETWORK_PROVIDER obtiene ubicación
+                        location = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
+                    }
+                }
+                if (location != null) {
+                    actualizarubicacion(location);
+                    lat = location.getLatitude();
+                    log = location.getLongitude();
+                    guardarCoordenadas(lat + ";" + log);
+                } else {
+                    Toast.makeText(this, "No se pudo obtener geolocalización", Toast.LENGTH_LONG).show();
+                }
 
 
+            }
+        }catch (Exception ex){
 
-    }
+        }
     }
 
     @Override
