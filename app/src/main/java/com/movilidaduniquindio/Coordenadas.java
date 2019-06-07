@@ -76,14 +76,17 @@ Preference preference;
     @Override
     public void onMapReady(GoogleMap googleMap) {
        try{
-           mMap = googleMap;
+           if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
+                   && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
 
+           } else {
+                   mMap = googleMap;
+                miUbicacion();
+                googleMap.setOnMarkerDragListener(this);
 
-        miUbicacion();
-        googleMap.setOnMarkerDragListener(this);
-
-        mMap.setOnMapClickListener(clickListener);
-        mMap.setMyLocationEnabled(true);
+                mMap.setOnMapClickListener(clickListener);
+                mMap.setMyLocationEnabled(true);
+            }
        }
        catch (Exception ex){
 
