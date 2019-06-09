@@ -8,6 +8,9 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
+import android.support.v7.app.AlertDialog;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
 import android.support.design.widget.NavigationView;
@@ -18,12 +21,28 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Toast;
+
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.toolbox.Volley;
+import com.google.android.gms.maps.model.LatLng;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class Servicios extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
     public static final String TAG = Servicios.class.getName();
     private Usuario usuario;
+    private RecyclerView recyclerViewServicio;
+    private ReciclerVewAdaptador adaptadorServicio;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -31,26 +50,15 @@ public class Servicios extends AppCompatActivity
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+        recyclerViewServicio=(RecyclerView)findViewById(R.id.RecyclerServicio);
+        recyclerViewServicio.setLayoutManager(new LinearLayoutManager(this));
+        adaptadorServicio=new ReciclerVewAdaptador(obtenerServicios());
+        recyclerViewServicio.setAdapter(adaptadorServicio);
+
         checkPermission();
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-             /**   Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();**/
-
-                Intent intentCServ =new Intent(Servicios.this,CrearServicio.class);
-                Intent intentLoguin =new Intent(Servicios.this,MainActivity.class);
-                usuario = Preference.getSavedObjectFromPreference(Servicios.this, "mPreference", "USER", Usuario.class);
-
-                if (usuario==null ||usuario.getLongitud()==null) {
-                    Servicios.this.startActivity(intentLoguin);
-                }
-                else{
-                    Servicios.this.startActivity(intentCServ);}
-            }
-        });
+        fab.setOnClickListener(FlButtonOnClickLister);
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -61,6 +69,78 @@ public class Servicios extends AppCompatActivity
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
     }
+
+    private List<Servicio> obtenerServicios(){
+        List<Servicio> servicioList=new ArrayList<>();
+
+
+        Response.Listener<String> responseListener = new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                try {
+                    LatLng inicio = new LatLng(0,0);
+                    LatLng fin= new LatLng(0,0);
+                    Servicio servicio;
+                    JSONArray jsonArray =new JSONArray(response);
+                    boolean success=jsonArray.getJSONObject(0).getBoolean("success");
+
+                    if (success){
+
+                        for (int i =1;i<jsonArray.length();i++) {
+                            String longDestino = jsonArray.getJSONObject(i).getString("longDestino");
+                            String latDestino = jsonArray.getJSONObject(i).getString("latDestino");
+                            String longOrigen = jsonArray.getJSONObject(i).getString("longOrigen");
+                            String latOrigen = jsonArray.getJSONObject(i).getString("latOrigen");
+                            String descripcion = jsonArray.getJSONObject(i).getString("descripcion");
+                            String conductor = jsonArray.getJSONObject(i).getString("conductor");
+                            String hora = jsonArray.getJSONObject(i).getString("hora");
+                            String fecha = jsonArray.getJSONObject(i).getString("fecha");
+                            String idVehiculo = jsonArray.getJSONObject(i).getString("idVehiculo");
+                            String numPuestos = jsonArray.getJSONObject(i).getString("numPuestos");
+                            String codRuta = jsonArray.getJSONObject(i).getString("codRuta");
+
+                            inicio=new LatLng(Double.parseDouble(latOrigen),Double.parseDouble(longOrigen));
+                            fin=new LatLng(Double.parseDouble(latDestino),Double.parseDouble(longDestino));
+
+                            servicio = new Servicio(codRuta,inicio,fin,fecha,hora,conductor,Integer.parseInt(numPuestos),descripcion,idVehiculo);
+
+                        }
+                    }else{
+                        AlertDialog.Builder builder =new AlertDialog.Builder(Servicios.this);
+                        builder.setMessage("Error cargando servicios").setNegativeButton("Ok",null)
+                                .create().show();
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        };
+
+
+        ConsultarServiciosRequest consultarServiciosRequest=new ConsultarServiciosRequest(responseListener);
+        RequestQueue requestQueue= Volley.newRequestQueue(Servicios.this);
+        requestQueue.add(consultarServiciosRequest);
+        return servicioList;
+    }
+
+
+    private FloatingActionButton.OnClickListener FlButtonOnClickLister =new View.OnClickListener() {
+        @Override
+        public void onClick(View view) {
+            /**   Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
+             .setAction("Action", null).show();**/
+
+            Intent intentCServ =new Intent(Servicios.this,CrearServicio.class);
+            Intent intentLoguin =new Intent(Servicios.this,MainActivity.class);
+            usuario = Preference.getSavedObjectFromPreference(Servicios.this, "mPreference", "USER", Usuario.class);
+
+            if (usuario==null ||usuario.getLongitud()==null) {
+                Servicios.this.startActivity(intentLoguin);
+            }
+            else{
+                Servicios.this.startActivity(intentCServ);}
+        }
+    };
 
     @Override
     public void onBackPressed() {

@@ -11,12 +11,12 @@ import java.util.Map;
 
 public class ConsultarServiciosRequest extends StringRequest {
 
-    private static final String CREAR_SERVICIO_REQUEST_URL=Constantes.SERVIDOR+"/movilidadUniquindio/ConsultarServicios.php";
+    private static final String CONSULTAR_SERVICIOS_REQUEST_URL=Constantes.SERVIDOR+"/movilidadUniquindio/ConsultarServicios.php";
     private Map<String,String> params;
 
-    public ConsultarServiciosRequest (Servicio servicio, Response.Listener<String> listener){
+    public ConsultarServiciosRequest (Response.Listener<String> listener){
 
-        super(Request.Method.POST,CREAR_SERVICIO_REQUEST_URL,listener,null);
+        super(Request.Method.POST,CONSULTAR_SERVICIOS_REQUEST_URL,listener,null);
     }
 
 }
