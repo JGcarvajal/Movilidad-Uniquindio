@@ -10,7 +10,7 @@ import java.util.Map;
 
 public class CrearServiciosRequest extends StringRequest {
 
-    private static final String CREAR_SERVICIO_REQUEST_URL=Constantes.SERVIDOR+"/movilidadUniquindio/CrearServicio.php";
+    private static final String CREAR_SERVICIO_REQUEST_URL=Constantes.SERVIDOR+"/servicios/CrearServicio.php";
     private Map<String,String> params;
 
     public CrearServiciosRequest (Servicio servicio, Response.Listener<String> listener){

@@ -49,13 +49,11 @@ public class Servicios extends AppCompatActivity
         setContentView(R.layout.activity_servicios);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
+        checkPermission();
         recyclerViewServicio=(RecyclerView)findViewById(R.id.RecyclerServicio);
         recyclerViewServicio.setLayoutManager(new LinearLayoutManager(this));
-        adaptadorServicio=new ReciclerVewAdaptador(obtenerServicios());
-        recyclerViewServicio.setAdapter(adaptadorServicio);
 
-        checkPermission();
+        obtenerServicios();
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(FlButtonOnClickLister);
@@ -71,7 +69,7 @@ public class Servicios extends AppCompatActivity
     }
 
     private List<Servicio> obtenerServicios(){
-        List<Servicio> servicioList=new ArrayList<>();
+       final List<Servicio> servicioList=new ArrayList<>();
 
 
         Response.Listener<String> responseListener = new Response.Listener<String>() {
@@ -82,11 +80,9 @@ public class Servicios extends AppCompatActivity
                     LatLng fin= new LatLng(0,0);
                     Servicio servicio;
                     JSONArray jsonArray =new JSONArray(response);
-                    boolean success=jsonArray.getJSONObject(0).getBoolean("success");
 
-                    if (success){
 
-                        for (int i =1;i<jsonArray.length();i++) {
+                        for (int i =0;i<jsonArray.length();i++) {
                             String longDestino = jsonArray.getJSONObject(i).getString("longDestino");
                             String latDestino = jsonArray.getJSONObject(i).getString("latDestino");
                             String longOrigen = jsonArray.getJSONObject(i).getString("longOrigen");
@@ -103,15 +99,16 @@ public class Servicios extends AppCompatActivity
                             fin=new LatLng(Double.parseDouble(latDestino),Double.parseDouble(longDestino));
 
                             servicio = new Servicio(codRuta,inicio,fin,fecha,hora,conductor,Integer.parseInt(numPuestos),descripcion,idVehiculo);
-
+                            servicioList.add(servicio);
                         }
-                    }else{
-                        AlertDialog.Builder builder =new AlertDialog.Builder(Servicios.this);
-                        builder.setMessage("Error cargando servicios").setNegativeButton("Ok",null)
-                                .create().show();
-                    }
+                        adaptadorServicio=new ReciclerVewAdaptador(servicioList);
+                        recyclerViewServicio.setAdapter(adaptadorServicio);
+
                 } catch (JSONException e) {
                     e.printStackTrace();
+                    AlertDialog.Builder builder =new AlertDialog.Builder(Servicios.this);
+                builder.setMessage("Error cargando servicios").setNegativeButton("Ok",null)
+                        .create().show();
                 }
             }
         };
@@ -121,6 +118,8 @@ public class Servicios extends AppCompatActivity
         RequestQueue requestQueue= Volley.newRequestQueue(Servicios.this);
         requestQueue.add(consultarServiciosRequest);
         return servicioList;
+
+
     }
 
 

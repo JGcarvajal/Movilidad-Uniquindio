@@ -10,7 +10,7 @@ import java.util.Map;
 
 public class LoguinRequest extends StringRequest {
 
-    private static final String LOGUIN_REQUEST_URL=Constantes.SERVIDOR+"/movilidadUniquindio/loginpHP.php";
+    private static final String LOGUIN_REQUEST_URL=Constantes.SERVIDOR+"/servicios/loginPHP.php";
     private Map<String,String> params;
 
     public LoguinRequest (String correo, String clave, Response.Listener<String> listener){

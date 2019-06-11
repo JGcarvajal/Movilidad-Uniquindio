@@ -11,7 +11,7 @@ import java.util.Map;
 
 public class ConsultarServiciosRequest extends StringRequest {
 
-    private static final String CONSULTAR_SERVICIOS_REQUEST_URL=Constantes.SERVIDOR+"/movilidadUniquindio/ConsultarServicios.php";
+    private static final String CONSULTAR_SERVICIOS_REQUEST_URL=Constantes.SERVIDOR+"/servicios/ConsultarServicios.php";
     private Map<String,String> params;
 
     public ConsultarServiciosRequest (Response.Listener<String> listener){
