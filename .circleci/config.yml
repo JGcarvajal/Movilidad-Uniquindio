@@ -8,21 +8,18 @@ jobs:
       JVM_OPTS: -Xmx3200m
     steps:
       - checkout
-      # - restore_cache:
-          # key: jars-{{ checksum "build.gradle" }}-{{ checksum  "app/build.gradle" }}
-
-       - run: npm install
-       - run: npx gulp build
-       - run: node .circleci/deploy.js
-       - run: echo "WE'RE ONLINE"
+      - restore_cache:
+          key: jars-{{ checksum "build.gradle" }}-{{ checksum  "app/build.gradle" }}
+          
+          
       # - run:
           # name: Deploy Master to Heroku
           # command: |
             # git push https://heroku:$HEROKU_API_KEY@git.heroku.com/$HEROKU_APP_NAME.git master
- #if permission for Gradlew Dependencies fail, use this.
-#      - run:
-#         name: Chmod permissions
-  #         command: sudo chmod +x ./gradlew
+         #if permission for Gradlew Dependencies fail, use this.
+      #- run:
+        #name: Chmod permissions
+        #command: sudo chmod +x ./gradlew
   
       - run: yes | sdkmanager --licenses || exit 0
       - run: yes | sdkmanager --update || exit 0
@@ -30,7 +27,7 @@ jobs:
       - run:
           name: Download Dependencies
           command: sudo chmod +x ./gradlew
-#          command: ./gradlew androidDependencies
+      # command: ./gradlew androidDependencies
       - save_cache:
           paths:
             - ~/.gradle
