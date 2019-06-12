@@ -31,7 +31,5 @@ jobs:
           path: app/build/outputs/apk/
           destination: apks/
       - deploy:
-          name: "Deploy to Fabric 🎉🎉"
-      - run:
           name: Deploy public folder to http://movilidaduq.000webhostapp.com
           command: rsync -avz --delete /home/circleci/project/ movilidaduq@files.000webhost.com:/public_html/apk
