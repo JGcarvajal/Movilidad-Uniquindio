@@ -4,7 +4,7 @@ jobs:
     working_directory: ~/code
     docker:
       - image: circleci/android:api-28-alpha
-      - image: circleci/node:latest
+      - image: circleci/node:10
     environment:
       JVM_OPTS: -Xmx3200m
     steps:
@@ -45,7 +45,17 @@ jobs:
 
       - checkout
       # Download and cache dependencies.
-       - run: npm install
-       - run: npx gulp build
-       - run: node .circleci/deploy.js
-       - run: echo "WE'RE ONLINE"
+      - restore_cache:
+          keys:
+          - v1-dependencies-{{ checksum "package.json" }}
+          # Fallback to using the latest cache if no exact match is found.
+          - v1-dependencies-
+      - run: npm install
+      - save_cache:
+          paths:
+            - node_modules
+          key: v1-dependencies-{{ checksum "package.json" }}
+      # Build the application.
+      - run: npm run generate
+      # Run the FTP deployment script.
+      - run: npm run ftp-deploy
