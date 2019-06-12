@@ -37,7 +37,6 @@ jobs:
             if [ "${CIRCLE_BRANCH}" == "develop" -o "${CIRCLE_PULL_REQUEST}" != "" ]; then
               ./gradlew crashlyticsUploadDistributionDevelopmentRelease --stacktrace --debug --no-daemon
             fi
-
             release=$(cut -c-7 <<< "${CIRCLE_BRANCH}")
             if [ "$release" == "release"]; then
               ./gradlew crashlyticsUploadDistributionProductionRelease --stacktrace --debug --no-daemon
