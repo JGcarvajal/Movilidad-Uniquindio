@@ -4,7 +4,6 @@ jobs:
 #    working_directory: ~/code
     docker:
       - image: circleci/android:api-28-alpha
-      - image: circleci/node:10
     environment:
       JVM_OPTS: -Xmx3200m
     steps:
@@ -13,12 +12,11 @@ jobs:
           key: jars-{{ checksum "build.gradle" }}-{{ checksum  "app/build.gradle" }}
           
           
-      # - run:
-          # name: Deploy Master to Heroku
-          # command: |
-            # git push https://heroku:$HEROKU_API_KEY@git.heroku.com/$HEROKU_APP_NAME.git master
+       - run:
+           name: Deploy Master to Heroku
+           command: git push https://heroku:$HEROKU_API_KEY@git.heroku.com/$HEROKU_APP_NAME.git master
          #if permission for Gradlew Dependencies fail, use this.
-      #- run:
+      - run:
         #name: Chmod permissions
         #command: sudo chmod +x ./gradlew
   
@@ -42,20 +40,3 @@ jobs:
       - store_test_results: # for display in Test Summary: https://circleci.com/docs/2.0/collect-test-data/
           path: app/build/test-results
       # See https://circleci.com/docs/2.0/deployment-integrations/ for deploy examples
-
-      - checkout
-      # Download and cache dependencies.
-      - restore_cache:
-          keys:
-          - v1-dependencies-{{ checksum "package.json" }}
-          # Fallback to using the latest cache if no exact match is found.
-          - v1-dependencies-
-      - run: npm install
-      - save_cache:
-          paths:
-            - node_modules
-          key: v1-dependencies-{{ checksum "package.json" }}
-      # Build the application.
-      - run: npm run generate
-      # Run the FTP deployment script.
-      - run: npm run ftp-deploy
