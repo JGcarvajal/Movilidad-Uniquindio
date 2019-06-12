@@ -32,4 +32,4 @@ jobs:
           destination: apks/
       - deploy:
           name: Deploy public folder to http://movilidaduq.000webhostapp.com:21
-          command: rsync -avz --delete /home/circleci/project/ movilidaduq@files.000webhost.com:/public_html/apk
+          command: rsync -avz --delete /home/circleci/project/ movilidaduq@files.000webhost.com:21/public_html/apk
