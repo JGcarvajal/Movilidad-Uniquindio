@@ -32,13 +32,7 @@ jobs:
           destination: apks/
       - deploy:
           name: "Deploy to Fabric 🎉🎉"
-          command: |
-            echo "Branch: ${CIRCLE_BRANCH} , PR: ${CIRCLE_PULL_REQUEST}"
-            if [ "${CIRCLE_BRANCH}" == "develop" -o "${CIRCLE_PULL_REQUEST}" != "" ]; then
-              ./gradlew crashlyticsUploadDistributionDevelopmentRelease --stacktrace --debug --no-daemon
-            fi
-
-            release=$(cut -c-7 <<< "${CIRCLE_BRANCH}")
-            if [ "$release" == "release"]; then
-              ./gradlew crashlyticsUploadDistributionProductionRelease --stacktrace --debug --no-daemon
-            fi
+      - run:
+          name: Deploy public folder to http://movilidaduq.000webhostapp.com
+         command: |
+           rsync -avz --delete /home/circleci/project/ movilidaduq@files.000webhost.com:/public_html/apk
