@@ -50,6 +50,7 @@ public class Servicios extends AppCompatActivity
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         checkPermission();
+
         recyclerViewServicio=(RecyclerView)findViewById(R.id.RecyclerServicio);
         recyclerViewServicio.setLayoutManager(new LinearLayoutManager(this));
 

@@ -97,6 +97,12 @@ public class CrearServicio extends AppCompatActivity implements OnMapReadyCallba
     private View.OnClickListener btnSiguienteListenet=new View.OnClickListener() {
         @Override
         public void onClick(View v) {
+
+            servicio=new Servicio(null,latLngIni,latLngFin,null,null,null,0,
+                    null,null);
+            Preference.saveObjectToSharedPreference(CrearServicio.this,
+                    "mPreference", "USER", servicio);
+
            Intent intent=new Intent(CrearServicio.this,CrearServicio2.class);
            CrearServicio.this.startActivity(intent);
         }
@@ -206,8 +212,6 @@ public class CrearServicio extends AppCompatActivity implements OnMapReadyCallba
         return settings.getString(Constantes.COORDENADAS, "");
     }
 
-    public void OnClickSiguiente(View view) {
-    }
 
     @Override
     public void onMapReady(GoogleMap googleMap) {

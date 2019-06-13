@@ -35,8 +35,6 @@ public class CrearServicio2 extends AppCompatActivity {
 
     Date dFecha,dHora;
     private Usuario usuario;
-    private LatLng latLngIni;
-    private LatLng latLngFin;
     Coordenadas coordenads;
     Preference preference;
     Servicio servicio;
@@ -54,7 +52,8 @@ public class CrearServicio2 extends AppCompatActivity {
         etPuestos=(EditText)findViewById(R.id.etPuestos);
         usuario = Preference.getSavedObjectFromPreference(this,
                 "mPreference", "USER", Usuario.class);
-
+        servicio= Preference.getSavedObjectFromPreference(this,
+                "mPreference", "USER", Servicio.class);
         tvCrearServicio=(TextView)findViewById(R.id.tvCrear);
         tvCrearServicio.setOnClickListener(tvCrearServicioListener);
 
@@ -117,23 +116,27 @@ public class CrearServicio2 extends AppCompatActivity {
     private View.OnClickListener tvCrearServicioListener=new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-            Servicio servicio;
+
 
             SimpleDateFormat dateFormat = new SimpleDateFormat("yyyyMMdd", Locale.getDefault());
             SimpleDateFormat timeFormat = new SimpleDateFormat("hhmm", Locale.getDefault());
             SimpleDateFormat horaFormat = new SimpleDateFormat("hh:mm", Locale.getDefault());
 
             final String numDoc = usuario.getIdentificacion()+dateFormat.format(dFecha)+timeFormat.format(dHora);
-            final LatLng latLngInicio=latLngIni;
-            final LatLng latLngFini=latLngFin;
+
             final String fecha=dateFormat.format(dFecha);
             final String hora=horaFormat.format(dHora);
             final String conductor=usuario.getIdentificacion();
             final int puestos=Integer.parseInt(etPuestos.getText().toString());
             final String observacion=etObservacion.getText().toString();
 
-            servicio=new Servicio(numDoc,latLngInicio,latLngFini,fecha,hora,conductor,puestos,
-                    observacion,"MZC78B");
+            servicio.setNumDoc(numDoc);
+            servicio.setFecha(fecha);
+            servicio.setHora(hora);
+            servicio.setConductor("1094918042");
+            servicio.setPuestos(puestos);
+            servicio.setObservacion(observacion);
+            servicio.setIdVehiculo("MZC78B");
 
             if(verificarServicio(servicio)) {
 
