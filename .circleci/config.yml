@@ -12,7 +12,6 @@ jobs:
       - run: echo "Mirkelam is working for you 👯"
       - restore_cache:
           key: 
-          - jars-{{ checksum "build.gradle" }}-{{ checksum  "app/build.gradle" }}
           - v1-dependencies-{{ checksum "package.json" }}
            # Fallback to using the latest cache if no exact match is found.
           - v1-dependencies-
