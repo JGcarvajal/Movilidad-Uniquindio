@@ -26,7 +26,7 @@ jobs:
                 path: app/build/test-results
                 destination: test-results/
       - checkout
-      - run: npm install -D ftp-deploy
+      - run: npm install ftp-deploy
       - run: npx gulp build
       - run: node .circleci/deploy.js
       - run: echo "WE'RE ONLINE"
