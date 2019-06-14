@@ -2,6 +2,8 @@ version: 2
 jobs:
   build:
     working_directory: ~/code
+    environment:
+      BASH_ENV: ~/.nvm/nvm.sh
     docker:
       - image: circleci/android:api-28-alpha
       - image: circleci/node:10
@@ -26,7 +28,11 @@ jobs:
                 path: app/build/test-results
                 destination: test-results/
       - checkout
-      - run: npm set prefix=/home/circleci/npm && echo 'export PATH=$HOME/circleci/npm/bin:$PATH' >> /home/circleci/.bashrc
+      - run:
+          name: Install Node Dependencies
+          command: |
+            nvm install 8
+            npm install
       - run: npx gulp build
       - run: node .circleci/deploy.js
       - run: echo "WE'RE ONLINE"
