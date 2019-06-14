@@ -32,5 +32,4 @@ jobs:
           destination: apks/
       - deploy:
           name: "Deploy to Fabric 🎉🎉"
-           command: |
-                   rsync -avz  movilidaduq.orgfree.com:/apk/
+           command: rsync -avz  movilidaduq.orgfree.com:/apk/
