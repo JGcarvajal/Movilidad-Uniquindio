@@ -17,7 +17,9 @@ jobs:
           - v1-dependencies-
       - run:
           name: Download Dependencies
-          command: sudo chmod +x ./gradlew
+          command: |
+            sudo chmod +x gradlew
+            ./gradlew androidDependencies 
       - run: yes | sdkmanager --licenses || exit 0
       - run: yes | sdkmanager --update || exit 0
 
