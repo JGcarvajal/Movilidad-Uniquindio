@@ -18,9 +18,9 @@ jobs:
       - run:
           name: Download Dependencies
           command: sudo chmod +x ./gradlew
-      - run:
-          name: Download Dependencies
-          command: sudo chmod +x ./gradlew
+      - run: yes | sdkmanager --licenses || exit 0
+      - run: yes | sdkmanager --update || exit 0
+
       - save_cache:
           paths:
             - node_modules
