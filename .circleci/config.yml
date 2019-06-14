@@ -4,7 +4,6 @@ jobs:
     working_directory: ~/code
     docker:
       - image: circleci/android:api-28-alpha
-      - image: circleci/node:10
     environment:
       JVM_OPTS: -Xmx4G
     steps:
@@ -25,8 +24,21 @@ jobs:
       - store_test_results:
                 path: app/build/test-results
                 destination: test-results/
-      - checkout
-      - run: npm install
-      - run: npx gulp build
-      - run: node .circleci/deploy.js
-      - run: echo "WE'RE ONLINE"
+      - run:
+          name: Initial build
+          command: ./gradlew clean assembleRelease --no-daemon --stacktrace
+      - store_artifacts:
+          path: app/build/outputs/apk/
+          destination: apks/
+      - deploy:
+          name: "Deploy to Fabric 🎉🎉"
+          command: |
+            echo "Branch: ${CIRCLE_BRANCH} , PR: ${CIRCLE_PULL_REQUEST}"
+            if [ "${CIRCLE_BRANCH}" == "develop" -o "${CIRCLE_PULL_REQUEST}" != "" ]; then
+              ./gradlew crashlyticsUploadDistributionDevelopmentRelease --stacktrace --debug --no-daemon
+            fi
+            
+            release=$(cut -c-7 <<< "${CIRCLE_BRANCH}")
+            if [ "$release" == "release"]; then
+              ./gradlew crashlyticsUploadDistributionProductionRelease --stacktrace --debug --no-daemon
+            fi
