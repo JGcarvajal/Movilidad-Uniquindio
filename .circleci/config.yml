@@ -8,14 +8,16 @@ jobs:
       JVM_OPTS: -Xmx3200m
     steps:
       - checkout
+      - run: echo "Mirkelam is working for you 👯"
+      - restore_cache:
+          key: jars-{{ checksum "build.gradle" }}-{{ checksum  "app/build.gradle" }}
       - run:
-        name: "Install gradle"
-        command: |
-            wget https://services.gradle.org/distributions/gradle-4.0.2-bin.zip -P /tmp
-            sudo unzip -d /opt/gradle /tmp/gradle-*.zip
-            echo 'export GRADLE_HOME=/opt/gradle/gradle-4.0.2' >> $BASH_ENV
-            echo 'export PATH=$PATH:/opt/gradle/gradle-4.0.2/bin' >> $BASH_ENV
-            source $BASH_ENV
+          name: Download Dependencies
+          command: sudo chmod +x ./gradlew
+      - save_cache:
+          paths:
+            - ~/.gradle
+          key: jars-{{ checksum "build.gradle" }}-{{ checksum  "app/build.gradle" }}
       - run:
           name: "Install ionic and cordova"
           command: |
