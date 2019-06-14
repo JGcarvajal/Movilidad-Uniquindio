@@ -24,7 +24,6 @@ jobs:
       - store_test_results:
                 path: app/build/test-results
                 destination: test-results/
-    steps:
       - checkout
       - run: npm install
       - run: npx gulp build
