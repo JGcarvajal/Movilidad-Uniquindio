@@ -10,11 +10,6 @@ jobs:
     steps:
       - checkout
       # Download and cache dependencies.
-      - restore_cache:
-          keys:
-          - v1-dependencies-{{ checksum "package.json" }}
-          # Fallback to using the latest cache if no exact match is found.
-          - v1-dependencies-
       - run:
           name: Download Dependencies
           command: |
@@ -22,6 +17,12 @@ jobs:
             ./gradlew androidDependencies 
       - run: yes | sdkmanager --licenses || exit 0
       - run: yes | sdkmanager --update || exit 0
+      - restore_cache:
+          keys:
+          - v1-dependencies-{{ checksum "package.json" }}
+          # Fallback to using the latest cache if no exact match is found.
+          - v1-dependencies-
+
 
       - save_cache:
           paths:
