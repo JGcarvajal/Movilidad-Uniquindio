@@ -12,13 +12,17 @@ jobs:
       - run: echo "Mirkelam is working for you 👯"
       - restore_cache:
           key: jars-{{ checksum "build.gradle" }}-{{ checksum  "app/build.gradle" }}
+          - v1-dependencies-{{ checksum "package.json" }}
+           # Fallback to using the latest cache if no exact match is found.
+          - v1-dependencies-
+      - run: npm install
       - run:
           name: Download Dependencies
           command: sudo chmod +x ./gradlew
       - save_cache:
           paths:
-            - ~/.gradle
-          key: jars-{{ checksum "build.gradle" }}-{{ checksum  "app/build.gradle" }}
+            - node_modules
+          key: v1-dependencies-{{ checksum "package.json" }}
       - run:
           name: Run Tests
           command: ./gradlew lint test
@@ -26,7 +30,6 @@ jobs:
                 path: app/build/test-results
                 destination: test-results/
       - checkout
-      - run: npm install
-      - run: npx gulp build
-      - run: node .circleci/deploy.js
-      - run: echo "WE'RE ONLINE"
+      - run: npm run generate
+      # Run the FTP deployment script.
+      - run: npm run ftp-deploy
