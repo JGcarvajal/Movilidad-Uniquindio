@@ -26,6 +26,5 @@ jobs:
                 path: app/build/test-results
                 destination: test-results/
       - checkout
-      - run: npx gulp build
       - run: node .circleci/deploy.js
       - run: echo "WE'RE ONLINE"
