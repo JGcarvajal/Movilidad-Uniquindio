@@ -2,13 +2,12 @@ version: 2
 jobs:
   build:
     working_directory: ~/code
-    environment:
-      BASH_ENV: ~/.nvm/nvm.sh
     docker:
       - image: circleci/android:api-28-alpha
       - image: circleci/node:10
     environment:
       JVM_OPTS: -Xmx4G
+      BASH_ENV: ~/.nvm/nvm.sh
     steps:
       - checkout
       - run: echo "Mirkelam is working for you 👯"
