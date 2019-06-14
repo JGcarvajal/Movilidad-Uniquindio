@@ -101,7 +101,7 @@ public class CrearServicio extends AppCompatActivity implements OnMapReadyCallba
             servicio=new Servicio(null,latLngIni,latLngFin,null,null,null,0,
                     null,null);
             Preference.saveObjectToSharedPreference(CrearServicio.this,
-                    "mPreference", "USER", servicio);
+                    "mPreference", "SERVICIO", servicio);
 
            Intent intent=new Intent(CrearServicio.this,CrearServicio2.class);
            CrearServicio.this.startActivity(intent);

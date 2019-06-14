@@ -2,7 +2,7 @@
 <resources>
     <color name="colorPrimary">#4CAF50</color>
     <color name="colorPrimaryDark">#388E3C</color>
-    <color name="colorBotones">#54CC76</color>
+    <color name="colorBotones">#8BC34A</color>
     <color name="colorBotonAzul">#75A5F8</color>
     <color name="colorLogin">#3374E4</color>
     <color name="colorNoSeleccionados">#FC897C</color>

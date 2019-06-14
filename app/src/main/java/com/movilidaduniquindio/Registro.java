@@ -32,7 +32,7 @@ public class Registro extends AppCompatActivity  {
     private Usuario usuario;
     private Button btnregistrar;
     private ImageButton btnCoordenadas;
-
+    private TextView idCoordenadas;
     private EditText eTnombre;
     private EditText eTapellidos;
     private EditText eTtelefono;
@@ -61,7 +61,7 @@ public class Registro extends AppCompatActivity  {
         eTdireccion=(EditText)findViewById(R.id.etDireccion);
         btnregistrar=(Button)findViewById(R.id.btnRegistrar);
         btnCoordenadas=(ImageButton)findViewById(R.id.ibtCoordenadas);
-
+        idCoordenadas=(TextView)findViewById(R.id.idCoordenadas);
         pintaButton(obtenerCoordenadas());
 
         btnregistrar.setOnClickListener(new View.OnClickListener() {
@@ -173,9 +173,9 @@ public class Registro extends AppCompatActivity  {
     private void pintaButton(String coodenadas){
 
         if(!coodenadas.equals("")){
-            btnCoordenadas.setBackgroundColor(Color.parseColor("#FC897C"));
+           idCoordenadas.setText("Sin capturar");
         }else{
-            btnCoordenadas.setBackgroundColor(Color.parseColor("#48F879"));
+            idCoordenadas.setText("Capturadas");
 
         }
     }

@@ -53,7 +53,7 @@ public class CrearServicio2 extends AppCompatActivity {
         usuario = Preference.getSavedObjectFromPreference(this,
                 "mPreference", "USER", Usuario.class);
         servicio= Preference.getSavedObjectFromPreference(this,
-                "mPreference", "USER", Servicio.class);
+                "mPreference", "SERVICIO", Servicio.class);
         tvCrearServicio=(TextView)findViewById(R.id.tvCrear);
         tvCrearServicio.setOnClickListener(tvCrearServicioListener);
 
@@ -133,7 +133,7 @@ public class CrearServicio2 extends AppCompatActivity {
             servicio.setNumDoc(numDoc);
             servicio.setFecha(fecha);
             servicio.setHora(hora);
-            servicio.setConductor("1094918042");
+            servicio.setConductor(conductor);
             servicio.setPuestos(puestos);
             servicio.setObservacion(observacion);
             servicio.setIdVehiculo("MZC78B");
@@ -146,7 +146,7 @@ public class CrearServicio2 extends AppCompatActivity {
                         try {
                             JSONObject jsonResponse = new JSONObject(response);
                             boolean success = jsonResponse.getBoolean("success");
-
+                            Toast.makeText(getBaseContext(), "Creo el servicio?!! "+success, Toast.LENGTH_LONG).show();
                             if (success) {
                                 Toast.makeText(getBaseContext(), "Servicio creado con exito!! ", Toast.LENGTH_LONG).show();
                                 Intent intent = new Intent(CrearServicio2.this, Servicios.class);

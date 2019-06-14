@@ -8,6 +8,13 @@
     android:fitsSystemWindows="true"
     tools:openDrawer="start">
 
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/RecyclerServicio"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"
+        android:paddingTop="50dp"/>
+
 
     <include
         android:id="@+id/nav_menu"
@@ -26,11 +33,5 @@
         app:menu="@menu/activity_servicios_drawer"
        />
 
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/RecyclerServicio"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior"
-        android:paddingTop="50dp"/>
 
 </android.support.v4.widget.DrawerLayout>

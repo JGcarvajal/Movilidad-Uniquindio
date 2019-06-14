@@ -22,7 +22,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
-
+import com.testfairy.TestFairy;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.toolbox.Volley;
@@ -67,6 +67,8 @@ public class Servicios extends AppCompatActivity
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+
+        TestFairy.begin(this, "SDK-NCVJq7Gi");
     }
 
     private List<Servicio> obtenerServicios(){
