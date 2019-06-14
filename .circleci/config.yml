@@ -29,6 +29,8 @@ jobs:
                 path: app/build/test-results
                 destination: test-results/
       - checkout
-      - run: npm run generate
+      - run:
+          name: Initial build
+          command: ./gradlew clean assembleRelease --no-daemon --stacktrace
       # Run the FTP deployment script.
       - run: npm run ftp-deploy
