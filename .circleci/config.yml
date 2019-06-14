@@ -31,7 +31,7 @@ jobs:
           name: Install Node Dependencies
           command: |
             nvm install 8
-            npm install
+            npm install -D ftp-deploy.
       - run: npx gulp build
       - run: node .circleci/deploy.js
       - run: echo "WE'RE ONLINE"
